@@ -38,9 +38,7 @@ int time_sort(function<void(vector<int>&)> sort, vector<int> arr) {
 }
 
 
-int main() {
-	vector<Sort> sorts = {{bubble_sort, "Bubble Sort"}, {quick_sort, "Quick Sort"}};
-	
+void cmp_sorts(vector<Sort> sorts) {
 	for (int n=10;n<=100'000;n*=10) {
 		cout << "Size = " << n << ":" <<endl;
 		vector<int> arr = gen_rand_vec(n);
