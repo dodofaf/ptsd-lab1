@@ -12,9 +12,7 @@ jobs:
     steps:
       -uses: actions/checkout@v4
       -name: Install and Run Linter
-        run: |
-          sudo apt-get install cppcheck
-          cppcheck src/ --error-exitcode=1 
+        run: sudo apt-get install cppcheck && cppcheck src/ --error-exitcode=1 
 
   build:
     needs: lint
