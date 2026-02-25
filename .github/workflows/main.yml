@@ -10,26 +10,26 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/checkout@v4
-      -name: Install and Run Linter
+      - uses: actions/checkout@v4
+      - name: Install and Run Linter
         run: |
-          sudo apt-get install cppcheck
-          cppcheck src/ --error-exitcode=1 
+            sudo apt-get install cppcheck
+            cppcheck src/ --error-exitcode=1 
 
   build:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/checkout@v4
-      -name: Build
+      - uses: actions/checkout@v4
+      - name: Build
         run: g++ src/main.cpp
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/checkout@v4
-      -name: Compile
+      - uses: actions/checkout@v4
+      - name: Compile
         run: g++ -o tests test/test.cpp
-      -name: Execute Tests
+      - name: Execute Tests
         run: ./tests
