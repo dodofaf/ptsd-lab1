@@ -19,17 +19,32 @@ jobs:
   build:
     needs: lint
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@v4
-      - name: Build
-        run: g++ src/main.cpp
+      - name: Login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and Push
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/cpp-app
+          IMAGE_ID=${IMAGE_ID,,}
+          docker build -t $IMAGE_ID:${{ github.sha }} .
+          docker push $IMAGE_ID:${{ github.sha }}
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Compile
-        run: g++ -o tests test/test.cpp
-      - name: Execute Tests
-        run: ./tests
+      
+      - name: Login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull and Test
+        run:
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/cpp-app
+          IMAGE_ID=${IMAGE_ID,,}
+          docker pull $IMAGE_ID:${{ github.sha }}
+          docker run --rm $IMAGE_ID:${{ github.sha }} ./my_test
