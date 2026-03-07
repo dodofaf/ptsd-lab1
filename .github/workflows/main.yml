@@ -29,7 +29,6 @@ jobs:
       - name: Build and Push
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/cpp-app
-          IMAGE_ID=${IMAGE_ID,,}
           docker build -t $IMAGE_ID:${{ github.sha }} .
           docker push $IMAGE_ID:${{ github.sha }}
 
@@ -45,6 +44,5 @@ jobs:
       - name: Pull and Test
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/cpp-app
-          IMAGE_ID=${IMAGE_ID,,}
           docker pull $IMAGE_ID:${{ github.sha }}
           docker run --rm $IMAGE_ID:${{ github.sha }} ./my_test
